@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Pokémon</title>
+    <style type="text/css">
+        #reprAjx{
+            margin: 5px;
+            padding: 5px;
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shinydex</h1>
+    <button type="button" id="loadButton"> Cargar datos</button>
+    <div id="userData">
+        
+    </div>
+ 
+    <script>
+        // Hecho por Iván Tortosa Entrenas - ITE
+        document.getElementById("loadButton").addEventListener("click", function() {
+            for (let numero = 1; numero < 151; numero++) {
+                const http = new XMLHttpRequest();
+                http.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        const response = JSON.parse(this.responseText);
+                        const imagen = response.sprites;
+                        const userData = response.name;
+                        const userDataContainer = document.getElementById("userData");
+                        userDataContainer.innerHTML += `<p>Nombre: ${userData}</p>
+                                                      <img src="${imagen.front_shiny}">`;
+                    }
+                };
+                http.open('GET', `https://pokeapi.co/api/v2/pokemon/${numero}`);
+                http.send();
+            }
+        });
+    </script>
+</body>
+</html>
